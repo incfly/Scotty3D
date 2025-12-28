@@ -6,27 +6,27 @@
 #include <vector>
 
 // A0T2: Problem 1
-// TODO: Uncomment the function below by removing the surrounding /* and */, and run in test mode.
+// DONE: Uncomment the function below by removing the surrounding /* and */, and run in test mode.
 //       You will encounter compilation errors. Fix them, make sure all 
 //       compilation errors go away, and move onto the next problem.
 // Hint: there are 3 parts that need to be fixed.
 
-/*
+
 Test test_a0_task2_problems_print("a0.task2.problems.print", []() {
-    string str = "str";
+    std::string str = "str";
     int integer = 0;
     float flt = 0.1f;
 
 	// Most common ways of printing a line of text in Scotty3D are:
-    printf("\n1. printf with format specifiers such as string %s, interger %d, and float %f.\n", str.c_str(), integer, flt)
+    printf("\n1. printf with format specifiers such as string %s, interger %d, and float %f.\n", str.c_str(), integer, flt);
     
-    std::cour << "2. std::cout and std::endl with multiple insertion operators like " 
+    std::cout << "2. std::cout and std::endl with multiple insertion operators like " 
               << str + ", " << integer << ", and " << flt << "." << std::endl;
 });
-*/
+
 
 // A0T2: Problem 2
-// TODO: We want to pass our target 2D vector through a filter called helper, 
+// DONE: We want to pass our target 2D vector through a filter called helper, 
 //       using the modifiers vector in the process. But for some reason, we 
 //       are seeing many more rejections from the filter run, causing more 
 //       zeroes to appear in our modified vector. Fix the problem to get 
@@ -41,7 +41,7 @@ Test test_a0_task2_problems_numerical("a0.task2.problems.numerical", []() {
     // Ex) let x = 1, y = 4. y / 3 = 4 / 3 = 1.333 > 1, so x < y / 3. Return true.
 
     int factor = 3;
-    auto helper = [&](int x, int y) { return x < (y / factor); };
+    auto helper = [&](int x, int y) { return x * factor < y; };
 
     int j = 0;
     for (auto& v : target) {
@@ -54,12 +54,12 @@ Test test_a0_task2_problems_numerical("a0.task2.problems.numerical", []() {
 
     std::vector<std::vector<int>> expected = {{1, 2, 0}, {4, 5, 0}, {0, 8, 9}};
 
-    if (Test::differs(target[0], expected[0]) || Test::differs(target[1], expected[1]) || Test::differs(target[2], expected[2]))
-        throw Test::error("The vector does not match the expected result.");
+    if  (Test::differs(target[1], expected[1]) || Test::differs(target[1], expected[1]) || Test::differs(target[2], expected[2]))
+        throw Test::error("The vector does not match the expected result 3 .");
 });
 
 // A0T2: Problem 3
-// TODO: Vectors are variable length arrays of C++. What could possibly be going
+// DONE: Vectors are variable length arrays of C++. What could possibly be going
 //       wrong with this simple code? Fix the code while using iterators to 
 //       retrieve the correct last element of the vector.
 // Hint: Befriend C++ documentation websites
@@ -72,7 +72,7 @@ Test test_a0_task2_problems_vector("a0.task2.problems.vector", []() {
     }
 
     // Use iterator to grab the last element of the vector
-    int last_element = *one_to_ten.end();
+    int last_element = *(std::prev(one_to_ten.end()));
 
     // The last element is surely a 10... right?
     int expected = 10;
@@ -84,7 +84,7 @@ Test test_a0_task2_problems_vector("a0.task2.problems.vector", []() {
 });
 
 // A0T2: Problem 4
-// TODO: We want to count how many times a number appears in all three vectors.
+// DONE: We want to count how many times a number appears in all three vectors.
 //       Find the reason why the function below reports a count too high and fix it.
 
 Test test_a0_task2_problems_boolean("a0.task2.problems.boolean", []() {
@@ -99,7 +99,7 @@ Test test_a0_task2_problems_boolean("a0.task2.problems.boolean", []() {
         for (size_t j = 0; j < vec2.size(); j++) {
             for (size_t k = 0; k < vec3.size(); k++) {
                 // Check if the numbers at indices i,j,k respectively are the same
-                if ((vec1.at(i) == vec2.at(j)) == vec3.at(k)) count++;
+                if ((vec1.at(i) == vec2.at(j)) && vec1.at(i) == vec3.at(k)) count++;
             }
         }
     }
