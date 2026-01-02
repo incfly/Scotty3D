@@ -45,6 +45,8 @@ enum PipelineFlags : uint32_t {
 };
 
 //A Pipeline processes vertices (fixed-length packets of opaque attributes):
+// NOTE: VA is likely the number of dimensions of the vertex attributes.
+// compilation time determined, 3, 4 etc.
 template<uint32_t VA>
 struct Vertex {
 	std::array< float, VA > attributes; //attributes to pass to Program::shade_vertex
@@ -54,6 +56,7 @@ struct Vertex {
 // position and homogeneous coordinates and attributes for the fragment shader:
 template<uint32_t FA>
 struct ShadedVertex {
+	// NOTE: clip_position, the one include the `w` additional dimension.
 	Vec4 clip_position; //position in (homogeneous) clip coordinates
 	std::array< float, FA > attributes; //attributes to pass to fragment program
 };
@@ -61,6 +64,7 @@ struct ShadedVertex {
 // These vertices are assembled into primitives, clipped (possibly producing more primitives),
 // divided by w, and passed through a viewport transform to compute positions in the framebuffer,
 // resulting in clipped vertices:
+// NOTE: ClippedVertex is the vertex after clipping (normalize to -1,1 and remove for screen).
 template<uint32_t FA>
 struct ClippedVertex {
 	Vec3 fb_position; //position in "viewport" coordinates ([0,fb.width]x[0,fb.height]x[0,1])
@@ -68,6 +72,7 @@ struct ClippedVertex {
 	std::array< float, FA > attributes; //attributes to pass to fragment program
 };
 
+// TODO: what is fragment mean here?
 // Clipped vertices are rasterized to create fragments:
 template<uint32_t FA, uint32_t FD>
 struct Fragment {
@@ -77,6 +82,7 @@ struct Fragment {
 };
 
 // And fragments are passed to a fragment program to create shaded fragments:
+// NOTE: homogeneous clip coordinates (with w dimension) - used for clipping
 struct ShadedFragment {
 	Vec3 fb_position; // position in "viewport" coordinates
 	Spectrum color;

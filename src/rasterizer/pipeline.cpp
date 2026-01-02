@@ -7,6 +7,9 @@
 #include "../lib/mathlib.h"
 #include "framebuffer.h"
 #include "sample_pattern.h"
+
+// NOTE: pipeline type, caller determine it's for transforming triangle or lines.
+//
 template<PrimitiveType primitive_type, class Program, uint32_t flags>
 void Pipeline<primitive_type, Program, flags>::run(std::vector<Vertex> const& vertices,
                                                    typename Program::Parameters const& parameters,

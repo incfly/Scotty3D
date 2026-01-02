@@ -9,6 +9,9 @@
 class Transform {
 public:
 	Transform() = default;
+	// Important: `that record the scaling, rotation, and translation (in that order!)`.
+	// Vec euler is the degree of rotation around the x, y, z axes, between -1, 1. (or 180 not sure which metric)
+	// Quat calculate the rotation in a quaternion, ax + by + cz + d. why quaternion can be used for descirbing rotation?
 	Transform(Vec3 t, Vec3 euler, Vec3 s) : translation(t), rotation(Quat::euler(euler)), scale(s) {
 	}
 	Transform(Vec3 t, Quat q, Vec3 s) : translation(t), rotation(q), scale(s) {

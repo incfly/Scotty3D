@@ -10,17 +10,29 @@ Mat4 Transform::parent_to_local() const {
 }
 
 Mat4 Transform::local_to_world() const {
-	// A1T1: local_to_world
-	//don't use Mat4::inverse() in your code.
-
-	return Mat4::I; //<-- wrong, but here so code will compile
+	auto par = parent.lock();
+	if (!par) {
+		return local_to_parent();
+	}
+	return par->local_to_world() * local_to_parent();
 }
 
+// Single pass! Once understand the transformation, mat4, math, things fit like precise machine!
 Mat4 Transform::world_to_local() const {
-	// A1T1: world_to_local
-	//don't use Mat4::inverse() in your code.
+	auto neg_parent_mat = Mat4::I;
+	auto par = parent.lock();
+	if (par) {
+		neg_parent_mat = par->world_to_local();
+	}
+	auto neg_trans = -this->translation;
+	
+	// Because of using quarternion, we can just negate, very simple and elegant!
+	auto neg_rotate = -this->rotation;
 
-	return Mat4::I; //<-- wrong, but here so code will compile
+	auto neg_scale = Vec3{1/this->scale.x, 1/this->scale.y, 1/this->scale.z};
+
+	auto neg_all_mat = Mat4::scale(neg_scale) * neg_rotate.to_mat() * Mat4::translate(neg_trans);
+	return neg_all_mat * neg_parent_mat;
 }
 
 bool operator!=(const Transform& a, const Transform& b) {
