@@ -108,9 +108,17 @@ struct Pipeline {
 	// When run, the pipeline...
 
 	//(1) starts with an array of Vertices:
+	// NOTE: VA is the size of the attribute for the Vertex, putting the VA in the end
+	// of the enum definition achieve this effect.
+	// Because VA_PositionW includes W so Vertex already on the homogenous coordinates.
 	using Vertex = ::Vertex<VA>;
 
 	//(2) transforms these vertices via Program::shade_vertex to produce ShadedVertices:
+	// NOTE: see example in pipeline.cpp
+	// ShadedVertex sv;
+	// Program::shade_vertex(parameters, v.attributes, &sv.clip_position, &sv.attributes);
+	// shaded_vertices.emplace_back(sv);
+	// Just copy the position and attribute, which is a RGB values.
 	using ShadedVertex = ::ShadedVertex<FA>;
 
 	// helper for clip functions:

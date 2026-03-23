@@ -155,7 +155,9 @@ struct Copy {
 		VA_ColorR,
 		VA_ColorG,
 		VA_ColorB,
-		VA_ColorA,
+		VA_ColorA, // RGB, A(Alpha) stands for transparency.
+		// NOTE: Just a placeholder so that we can represents the size of the
+		//vertex attribute.
 		VA
 	};
 	// fragment attribute layout:

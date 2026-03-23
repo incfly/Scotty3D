@@ -1,11 +1,12 @@
-#include "test.h"
-#include "rasterizer/pipeline.h"
-#include "rasterizer/programs.h"
-
 #include <limits>
 #include <iomanip>
 #include <algorithm>
 #include <unordered_set>
+#include <string>
+
+#include "test.h"
+#include "rasterizer/pipeline.h"
+#include "rasterizer/programs.h"
 
 using TestPipeline = Pipeline< PrimitiveType::Lines, Programs::Lambertian, Pipeline_Blend_Replace | Pipeline_Depth_Less | Pipeline_Interp_Flat >;
 
@@ -22,6 +23,7 @@ namespace std {
 }
 
 //check that line produces exactly the listed fragments:
+// NOTE: line_strip contains the start and end position, expected is the list of points.
 void check_line_covers(std::string const &desc, std::vector< Vec2 > const &line_strip, std::unordered_set< Vec2 > const &expected) {
 
 	std::unordered_set< Vec2 > got;
@@ -114,6 +116,10 @@ void check_line_covers(std::string const &desc, std::vector< Vec2 > const &line_
 	assert(matched == expected.size());
 }
 
+// NOTE: overloaded function, line strip is the same. raster would be convereted to the list of points.
+// Looking at the logic, basically the raster is mimic a inline plot pixel, starting from zero, from
+// top left corner. Of course this requires segment to be small and starting from nearby area, ok
+// for our test. `.` means not cover, `#` means cover.
 //check that line produces exactly the fragments drawn in a fancy picture:
 void check_line_covers(std::string const &desc, std::initializer_list< Vec2 > const &line_strip, std::initializer_list< std::string > const &raster_) {
 	//convert raster to set of points ( with lower-left being (0,0) ):
